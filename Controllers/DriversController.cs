@@ -2,7 +2,11 @@
 using Drivers.Api.Services;
 using Drivers.Api.Models;
 
-namespace Drivers.Api.Controllers
+namespace Drivers.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class DriversController : ControllerBase
 {
     
     private readonly ILogger<DriversController> _logger;
