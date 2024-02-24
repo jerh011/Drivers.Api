@@ -4,67 +4,64 @@ using Drivers.Api.Models;
 
 namespace Drivers.Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class DriversControllers : ControllerBase
+    
+    private readonly ILogger<DriversController> _logger;
+    private readonly DriverServices _driverServices;
+
+    public DriversController(
+        ILogger<DriversController> logger,
+        DriverServices driverServices)
     {
-        private readonly ILogger<DriversControllers> _logger;
-        private readonly DriverServices _driversServices;
+        _logger= logger;
+        _driverServices=driverServices;
+    }
 
-        public DriversControllers(ILogger<DriversControllers> logger, DriverServices driverServices)
-        {
-            _logger = logger;
-            _driversServices = driverServices;
-        }
+    [HttpGet]
 
-        [HttpGet]
-        public async Task<IActionResult> GetDrivers()
-        {
-            var drivers = await _driversServices.GetAsync();
+    public async Task <IActionResult> GetDrivers()
+    {
+            var drivers=await _driverServices.GetAsync();
             return Ok(drivers);
-        }
+    }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetDriversByID(string Id)
-        {
+    [HttpGet("{Id}")]
+    public async Task<IActionResult> GetDriversByID(string Id)
+    {
 
-            return Ok(await _driversServices.GetDriverById(Id));
-        }
+        return Ok(await _driverServices.GetDriverById(Id));
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateDriver([FromBody] Driver drive)
-        {
-            if (drive == null)
-                return BadRequest();
-            if (drive.Name == string.Empty)
-                ModelState.AddModelError("Name", "El driver no debe estar vacio");
+    [HttpPost]
+    public async Task<IActionResult> CreateDriver([FromBody] Driver drive)
+    {
+        if (drive == null)
+            return BadRequest();
+        if (drive.Name == string.Empty)
+            ModelState.AddModelError("Name", "El driver no debe estar vacio");
 
-            await _driversServices.InsertDriver(drive);
-            return Created("Created", true);
-        }
+        await _driverServices.InsertDriver(drive);
+        return Created("Created", true);
+    }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDriver([FromBody] Driver drive, string id)
-        {
-            if (drive == null)
-                return BadRequest();
-            if (drive.Name == string.Empty)
-                ModelState.AddModelError("Name", "El driver no debe estar vacio");
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateDriver([FromBody] Driver drive, string id)
+    {
+        if (drive == null)
+            return BadRequest();
+        if (drive.Name == string.Empty)
+            ModelState.AddModelError("Name", "El driver no debe estar vacio");
 
-            drive.Id = id;
+        drive.Id = id;
 
-            await _driversServices.UpdateDriver(drive);
-            return Created("Created", true);
-        }
+        await _driverServices.UpdateDriver(drive);
+        return Created("Created", true);
+    }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Deletedriver(string Id)
-        {
+    [HttpDelete("{Id}")]
+    public async Task<IActionResult> Deletedriver(string Id)
+    {
 
-            await _driversServices.DelateDriver(Id);
-            return NoContent();
-        }
-
-
+        await _driverServices.DelateDriver(Id);
+        return NoContent();
     }
 }
