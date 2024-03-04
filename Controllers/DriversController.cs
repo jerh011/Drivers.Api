@@ -8,7 +8,7 @@ namespace Drivers.Api.Controllers;
 [Route("api/[controller]")]
 public class DriversController : ControllerBase
 {
-    
+
     private readonly ILogger<DriversController> _logger;
     private readonly DriverServices _driverServices;
 
@@ -16,16 +16,16 @@ public class DriversController : ControllerBase
         ILogger<DriversController> logger,
         DriverServices driverServices)
     {
-        _logger= logger;
-        _driverServices=driverServices;
+        _logger = logger;
+        _driverServices = driverServices;
     }
 
     [HttpGet]
 
-    public async Task <IActionResult> GetDrivers()
+    public async Task<IActionResult> GetDrivers()
     {
-            var drivers=await _driverServices.GetAsync();
-            return Ok(drivers);
+        var drivers = await _driverServices.GetAsync();
+        return Ok(drivers);
     }
 
     [HttpGet("{Id}")]

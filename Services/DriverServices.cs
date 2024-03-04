@@ -5,28 +5,28 @@ using Drivers.Api.Configurations;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 
-namespace  Drivers.Api.Services;
+namespace Drivers.Api.Services;
 
-  
-        
-public class DriverServices    
+
+
+public class DriverServices
 {
     private readonly IMongoCollection<Driver> _driverCollection;
-    public DriverServices( IOptions<DatabaseSettings> databaseSettings)
+    public DriverServices(IOptions<DatabaseSettings> databaseSettings)
     {
         //Inicializar mi cliente de MongoDB 
         var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
-       //Conectar a la base de datos MongoDB
+        //Conectar a la base de datos MongoDB
         var mongoDB =
         mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
         _driverCollection =
          mongoDB.GetCollection<Driver>
-            (databaseSettings.Value.CollectionName);
+            (databaseSettings.Value.Collections["Drivers"]);
     }
-   
+
     public async Task<List<Driver>> GetAsync() =>
     await _driverCollection.Find(_ => true).ToListAsync();
-   
+
     public async Task<Driver> GetDriverById(string id)
     {
         return await _driverCollection.FindAsync(new BsonDocument
@@ -50,4 +50,3 @@ public class DriverServices
     }
 
 }
-        

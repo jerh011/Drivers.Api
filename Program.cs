@@ -10,9 +10,12 @@ using Drivers.Api.Services;
  builder.Services.AddEndpointsApiExplorer();
  builder.Services.AddSwaggerGen();
 
- builder.Services.AddSingleton<DriverServices>();
+// builder.Services.AddSingleton<DriverServices>();
 
- var app = builder.Build();
+builder.Services.AddScoped<DriverServices>();
+builder.Services.AddScoped<CarrerasServices>();
+
+var app = builder.Build();
 
 
  // Configure the HTTP request pipeline.
